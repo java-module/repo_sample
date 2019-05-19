@@ -31,12 +31,12 @@ repoConfig.execute(settings)
 3. `meta/modules.groovy`  实现了仓库地址、缓存目录解析通用方法
 
 apply from: 'plugin/RepoModulePlugin.groovy'.repoDownload()，
-`repoDownload()` 方法会下载 `java-module/repo` 对用的文件并返回下载地址。
+`repoDownload()` 方法会下载 `java-module/repo` 对应的文件并返回下载地址。
 这里下载 `https://github.com/java-module/repo/raw/master/plugin/RepoModulePlugin.groovy` 并返回下载文件给 `setting.gradle` 导入这个脚本。
 
  `RepoModulePlugin.groovy` 创建 `repoConfig` 配置，最后执行`repoConfig.execute(settings)` 开始下载依赖源码并导入项目。
  
  最终会自动下载 `https://github.com/wittyneko/gradle-tools` 仓库zip文件并解压到 `modules` 目录下对应目录, 导入工程重命名为 `github.wittyneko.gradle-tools`。
- 同样会下载 `https://github.com/wittyneko/ktx-base` 但只导入 `base`，命名也会加速模块名为 `github.wittyneko.ktx-base.base`
+ 同样会下载 `https://github.com/wittyneko/ktx-base` 但只导入 `base`，命名也会加上模块名 `github.wittyneko.ktx-base.base`
   
  
