@@ -1,0 +1,49 @@
+apply from: "https://raw.githubusercontent.com/java-module/repo/master/install.groovy"
+//apply from: "repo/install.groovy"
+apply from: 'plugin/RepoModulePlugin.groovy'.repoDownload()
+
+repoConfig {
+    scriptDownload = false
+    modules = [
+            'github/wittyneko/gradle-tools/master',
+            'github/wittyneko/ktx-base/master/base.groovy',
+    ]
+}
+repoConfig.execute(settings)
+
+
+include ':app'
+
+rootProject.name = 'repo_sample'
+
+//include ':repo'
+//project(":repo").projectDir = new File(user_home, 'code/java-module/repo')
+
+rootProject.children.each { p ->
+
+    println "project-> $p.path, $p.projectDir"
+    if (!"$p.projectDir".startsWith("$rootDir")) {
+        // 不是当前项目的子工程修改名称
+        p.name = "$rootProject.name$p.path".replace(':', '-')
+    }
+    def allChildren = [] as Collection<ProjectDescriptor>
+    def curChildren = p.children
+    // 遍历全部子项目添加到 allChildren
+    while (!curChildren.isEmpty()) {
+        allChildren.addAll(curChildren)
+        /**
+         * findResults 将当前curChildren的children列表添加到result
+         * flatten() 将result列表中的children列表元素取出组成一个新列表给curChildren
+         */
+        curChildren = curChildren.findResults {
+            it.children.isEmpty() ? null : it.children
+        }.flatten()
+    }
+
+    allChildren.each { project ->
+        println "projectChild-> $project.path, $project.projectDir"
+        if (!"$project.projectDir".startsWith("$rootDir")) {
+            project.name = project.path.substring(1).replace(':', '-')
+        }
+    }
+}
