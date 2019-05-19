@@ -1,5 +1,5 @@
-apply from: "https://raw.githubusercontent.com/java-module/repo/master/install.groovy"
-//apply from: "repo/install.groovy"
+//apply from: "https://raw.githubusercontent.com/java-module/repo/master/install.groovy"
+apply from: "repo/install.groovy"
 apply from: 'plugin/RepoModulePlugin.groovy'.repoDownload()
 
 repoConfig {
